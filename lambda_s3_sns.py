@@ -1,19 +1,21 @@
 import boto3
 
 def lambda_handler(event, context):
-    #creating connection b/w lambda and s3
-    s3 = boto3.client("s3")
-    #creating connection b/w lambda and sns
-    sns = boto3.client("sns")
-    
-    # Get the name of the S3 bucket
+    # Get the S3 bucket name and object key from the event
     bucket_name = event["Records"][0]["s3"]["bucket"]["name"]
+    object_key = event["Records"][0]["s3"]["object"]["key"]
     
-    # Check if the bucket name matches the desired bucket, in place of "my-desired-bucket" please enter your bucket name
-    if bucket_name == "my-desired-bucket":
-        object_key = event["Records"][0]["s3"]["object"]["key"]
-        #the above line is used to take the object name that has been recently uploaded
-        message = "A new object was uploaded to the '{}' S3 bucket. Object key: '{}'".format(bucket_name, object_key)
+    # Get the file format from the object key
+    file_format = object_key.split(".")[-1]
+    
+    # Check if the object was uploaded to the specific SNS bucket
+    if bucket_name == "specific-sns-bucket":
+        # Send SNS message if object was uploaded to specific SNS bucket
+        sns = boto3.client("sns")
+        message = f"An object was uploaded to the {bucket_name} bucket with the file format: {file_format}"
         sns.publish(TopicArn="arn:aws:sns:<REGION>:<ACCOUNT_ID>:<TOPIC_NAME>", Message=message)
-    
-    return "Done"
+
+    return {
+        "statusCode": 200,
+        "body": "SNS message sent successfully"
+    }
