@@ -1,0 +1,35 @@
+---
+- name: Ensure Apache is installed and running, and update index.html
+  hosts: all
+  tasks:
+    - name: Install Apache
+      become: yes
+      apt:
+        name: apache2
+        state: present
+        
+    - name: Start Apache
+      become: yes
+      service:
+        name: apache2
+        state: started
+
+    - name: Remove old index.html
+      become: yes
+      file:
+        path: /var/www/html/index.html
+        state: absent
+        
+    - name: Create new index.html
+      become: yes
+      copy:
+        dest: /var/www/html/index.html
+        content: |
+          <html>
+          <head>
+            <title>My custom index page</title>
+          </head>
+          <body>
+            <h1>Welcome to my custom index page</h1>
+          </body>
+          </html>
