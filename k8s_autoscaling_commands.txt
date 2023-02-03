@@ -1,0 +1,33 @@
+After setting up K8s cluster and created a deployment with .yaml file for your web application. Install the following metric software to increase the pods
+"kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.3.6/components.yaml"
+
+Check the status of metrics-server to make sure it is installed correctly by using the following command
+"kubectl get pods -n kube-system"
+
+Create an HPA resource in your Kubernetes cluster to manage the scaling of your deployment. The following is an example of an HPA resource definition in a .yaml file.
+"apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: my-web-app-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: my-web-app-deployment
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      targetAverageUtilization: 80"
+      
+The above HPA will scale the replicas of the "my-web-app-deployment" deployment between 1 and 10 replicas, based on the average CPU utilization of the pods. If the average CPU utilization is above 80%, the HPA will increase the number of replicas, and if the utilization is below 80%, the HPA will decrease the number of replicas
+      
+Apply the HPA resource definition to your Kubernetes cluster using the following command:
+"kubectl apply -f my-web-app-hpa.yaml"
+
+Verify that the HPA is working by checking the status of the HPA resource and the replicas of your deployment. You can use the following commands to check the status of the HPA
+"kubectl get hpa"
+"kubectl describe hpa my-web-app-hpa"
+
