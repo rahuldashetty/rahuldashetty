@@ -1,3 +1,6 @@
+Kasten K10 is a data management and disaster recovery solution for Kubernetes-orchestrated applications. It provides a comprehensive platform for backing up, restoring, and recovering data in a cloud-native environment. Kasten K10 provides a single platform to manage data protection, disaster recovery and data management operations across multiple clouds and on-premises environments. It helps organizations ensure their critical business data is protected, easily recoverable and can be moved between different deployment environments
+
+
 To backup a kubernetes cluster with Kasten K10, you can follow these steps:
 
 1.Install the Kasten K10 operator: To install Kasten K10 operator, you need to have the kubectl command-line tool and access to your k8s cluster. You can install the operator by running the following command:
