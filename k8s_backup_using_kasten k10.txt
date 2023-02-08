@@ -1,0 +1,41 @@
+To backup a kubernetes cluster with Kasten K10, you can follow these steps:
+
+1.Install the Kasten K10 operator: To install Kasten K10 operator, you need to have the kubectl command-line tool and access to your k8s cluster. You can install the operator by running the following command:
+     "kubectl apply -f https://docs.kasten.io/k10/latest/install/install-k10.yaml"
+
+2.Create a Kasten K10 namespace: You can create a namespace for Kasten K10 by running the following command:
+     "kubectl create namespace kasten-io"
+     
+3.Configure the Kasten K10 Backup: You can configure the backup by creating a Backup object using a YAML file. This YAML file will define the resources you want to back up, the schedule of the backup, and the storage location. You can create the YAML file and apply it to your cluster by running the following command:
+     "kubectl apply -f <backup-config-yaml-file> -n kasten-io"
+     
+yaml code sample:
+      apiVersion: kasten.io/v1
+kind: Backup
+metadata:
+  name: web-app-backup
+spec:
+  schedule:
+    cron: "0 0 * * *" # Daily at midnight
+  targets:
+  - apiVersion: v1
+    kind: Pod
+    name: web-app-pod
+    namespace: default
+  backupStrategy:
+    backend: s3
+    s3:
+      accessKey: <access_key>
+      secretKey: <secret_key>
+      region: <region>
+      bucket: <bucket_name>
+      prefix: web-app-backup
+
+4.Verify the Backup: To verify the backup, you can use the following command to check the status of the backup:
+     "kubectl get backups -n kasten-io"
+
+     
+
+     
+     
+     
