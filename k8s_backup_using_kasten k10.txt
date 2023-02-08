@@ -35,6 +35,25 @@ spec:
      "kubectl get backups -n kasten-io"
 
      
+if you want you access gui of kasten to do that follow:
+
+Connect to the cluster using the kubectl command-line tool.
+Use the command kubectl get svc to list all the services running in the cluster.
+Look for the service named "kasten-k10-web" or something similar.
+Get the External IP address or LoadBalancer IP address of the service.
+Access the Kasten K10 GUI by opening a web browser and navigating to the URL http://<External IP address>:<port> or http://<LoadBalancer IP address>:<port>
+
+once you logged in you can take backup's and create policies in gui, but if you already took the backup you can get yaml file of the backup and using the yaml file you can create another cluster with same configuration, follow this steps:
+
+Navigate to the Backup and Restore dashboard.
+
+Select the backup you want to restore from the list of available backups.
+
+Click on the “Restore” button and select the option “Download YAML”.
+
+The restore YAML file will be downloaded to your local system. This YAML file contains the configuration required to restore the backup.
+
+Use the kubectl command "kubectl apply -f <restore-config-yaml-file> -n kasten-io" to apply the YAML file and restore the backup.
 
      
      
