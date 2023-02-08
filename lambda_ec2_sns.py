@@ -1,6 +1,6 @@
 import boto3
 import json
-
+#This will send notification when your ec2 got deleted or 80% exceeded
 
 def lambda_handler(event, context):
     cloudwatch = boto3.client('cloudwatch')
